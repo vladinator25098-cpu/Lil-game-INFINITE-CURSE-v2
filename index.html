@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Infinite Curse</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="app">
+  <canvas id="game"></canvas>
+
+  <div id="hud" class="hidden">
+    <div class="bar-row">
+      <div class="bar hp-bar"><div class="bar-fill hp-fill" id="hpFill"></div><span class="bar-label" id="hpLabel">100/100</span></div>
+      <div class="lvl-badge" id="lvlBadge">Lv.1</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar xp-bar"><div class="bar-fill xp-fill" id="xpFill"></div></div>
+    </div>
+    <div class="bar-row" id="energyRow">
+      <div class="bar energy-bar"><div class="bar-fill energy-fill" id="energyFill"></div><span class="bar-label" id="energyLabel">DOMAIN</span></div>
+    </div>
+    <div class="stats-row">
+      <span id="timer">00:00</span>
+      <span id="killCount">Curses Exorcised: 0</span>
+    </div>
+  </div>
+
+  <div id="menu-overlay" class="overlay">
+    <h1 class="title">INFINITE <span class="accent">CURSE</span></h1>
+    <p class="subtitle">an endless cursed-technique survival roguelike</p>
+    <div class="char-grid" id="charGrid"></div>
+    <p class="hint">Move: WASD / Arrows &nbsp;·&nbsp; Domain Expansion: SPACE &nbsp;·&nbsp; Pause: ESC</p>
+    <button class="btn primary" id="startBtn">Begin Exorcism</button>
+    <p class="best" id="menuBest"></p>
+  </div>
+
+  <div id="levelup-overlay" class="overlay hidden">
+    <h2 class="title small">CURSED TECHNIQUE <span class="accent">AWAKENING</span></h2>
+    <div class="card-grid" id="upgradeCards"></div>
+  </div>
+
+  <div id="pause-overlay" class="overlay hidden">
+    <h2 class="title small">PAUSED</h2>
+    <p class="hint">Press ESC to resume</p>
+  </div>
+
+  <div id="gameover-overlay" class="overlay hidden">
+    <h2 class="title small">CONSUMED <span class="accent">BY CURSE</span></h2>
+    <div class="stats-final" id="finalStats"></div>
+    <div class="go-buttons">
+      <button class="btn primary" id="retryBtn">Retry</button>
+      <button class="btn" id="menuBtn">Main Menu</button>
+    </div>
+  </div>
+
+  <div id="banner" class="hidden"></div>
+</div>
+<!-- Add new characters here (see characters/README.md) -->
+<script src="characters/registry.js"></script>
+<script src="characters/itadori.js"></script>
+<script src="characters/megumi.js"></script>
+<script src="characters/gojo.js"></script>
+<script src="game.js"></script>
+</body>
+</html>

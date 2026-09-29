@@ -2,6 +2,10 @@
 
 An endless cursed-technique survival roguelike that runs in the browser. Pick a sorcerer, exorcise curses, level up, and unlock your domain expansion.
 
+## Open for everyone
+
+I'm happy for people to use this project however they like: play it, fork it, build on it, or make your own version. Contributions are very welcome, whether that's new characters, maps, weapons, enemies or fixes. See [CONTRIBUTING.md](CONTRIBUTING.md) to get started.
+
 ## Play
 
 No build step or dependencies. Serve the folder with any static server:

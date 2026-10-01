@@ -4,7 +4,10 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Infinite Curse</title>
-<link rel="stylesheet" href="style.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Shippori+Mincho+B1:wght@700;800&family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 <div id="app">
@@ -12,8 +15,8 @@
 
   <div id="hud" class="hidden">
     <div class="bar-row">
-      <div class="bar hp-bar"><div class="bar-fill hp-fill" id="hpFill"></div><span class="bar-label" id="hpLabel">100/100</span></div>
       <div class="lvl-badge" id="lvlBadge">Lv.1</div>
+      <div class="bar hp-bar"><div class="bar-fill hp-fill" id="hpFill"></div><span class="bar-label" id="hpLabel">100/100</span></div>
     </div>
     <div class="bar-row">
       <div class="bar xp-bar"><div class="bar-fill xp-fill" id="xpFill"></div></div>
@@ -24,36 +27,156 @@
     <div class="stats-row">
       <span id="timer">00:00</span>
       <span id="killCount">Curses Exorcised: 0</span>
+      <span id="dashLabel"></span>
     </div>
   </div>
 
-  <div id="menu-overlay" class="overlay">
-    <h1 class="title">INFINITE <span class="accent">CURSE</span></h1>
-    <p class="subtitle">an endless cursed-technique survival roguelike</p>
+  <div id="bossBar" class="hidden">
+    <div class="boss-title"><span class="boss-grade">特級呪霊 · SPECIAL GRADE</span><span class="boss-name" id="bossName">JOGO</span></div>
+    <div class="boss-hp"><div class="boss-hp-fill" id="bossFill"></div></div>
+  </div>
+
+  <div id="menu-overlay" class="overlay menu">
+    <div class="menu-bg" id="menuBg"><span class="bg-kanji">呪</span></div>
+    <div class="side-text left">呪術高専 · 東京校</div>
+    <div class="side-text right">祓 · 除 · 記 · 録</div>
+    <header class="menu-head">
+      <div class="eyebrow"><span class="seal">呪</span>Jujutsu High · Exorcism Record</div>
+      <h1 class="title"><span class="t-white">INFINITE</span><span class="t-red">CURSE</span></h1>
+      <p class="subtitle"><span class="jp">無限呪霊</span>an endless cursed-technique survival roguelike</p>
+    </header>
+    <div class="section-label"><span>術師選択</span>Select your sorcerer</div>
     <div class="char-grid" id="charGrid"></div>
-    <p class="hint">Move: WASD / Arrows &nbsp;·&nbsp; Domain Expansion: SPACE &nbsp;·&nbsp; Pause: ESC</p>
-    <button class="btn primary" id="startBtn">Begin Exorcism</button>
+    <button class="btn mode-btn" id="modeBtn"></button>
+    <button class="btn primary" id="startBtn"><span class="btn-kanji">祓</span>Begin Exorcism</button>
+    <button class="btn" id="shopBtn"><span class="btn-kanji">呪</span>Shard Shop <span class="shop-have">◆ <b id="menuShards">0</b></span></button>
+    <p class="hint"><kbd>WASD</kbd> move <i>·</i> <kbd>SPACE</kbd> Domain Expansion <i>·</i> <kbd>ESC</kbd> pause <i>·</i> <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd> pick</p>
     <p class="best" id="menuBest"></p>
   </div>
 
+  <div id="shop-overlay" class="overlay hidden">
+    <div class="ov-kanji">呪</div>
+    <h2 class="title small"><span class="t-white">CURSED</span> <span class="t-red">SHARDS</span></h2>
+    <p class="subtitle"><span class="jp">永久強化</span>permanent upgrades · you have <b>◆ <span id="shopShards">0</span></b></p>
+    <div class="card-grid shop-grid" id="shopGrid"></div>
+    <button class="btn" id="shopBack">Back <kbd>ESC</kbd></button>
+  </div>
+
+  <div id="victory-overlay" class="overlay hidden">
+    <div class="ov-kanji">祓</div>
+    <h2 class="title small"><span class="t-white">ALL DISASTERS</span> <span class="t-red">EXORCISED</span></h2>
+    <p class="subtitle"><span class="jp">勝利</span>the three Special Grades have fallen</p>
+    <div class="go-buttons">
+      <button class="btn primary" id="keepBtn"><span class="btn-kanji">続</span>Keep Fighting</button>
+      <button class="btn" id="cashBtn">Collect Shards</button>
+    </div>
+  </div>
+
+  <div id="prestige-overlay" class="hidden">
+    <div class="st-bg" id="pvBg"></div>
+    <div class="st-head"><span id="pvEyebrow"></span><h2 id="pvTitle"></h2></div>
+    <div class="st-stage">
+      <div class="st-frame" id="pvFrame"><img id="pvImg" alt="" /></div>
+      <canvas id="pvArt" class="pv-art hidden" width="360" height="540"></canvas>
+    </div>
+    <div class="st-caption" id="pvCaption">
+      <div class="st-name" id="pvName"></div>
+      <p class="st-text" id="pvText"></p>
+      <span class="st-next">&#9660;</span>
+    </div>
+    <div class="pv-reveal hidden" id="pvReveal">
+      <ul id="pvPerks"></ul>
+      <div class="go-buttons">
+        <button class="btn primary" id="pvAccept"><span class="btn-kanji">覇</span>Evolve</button>
+        <button class="btn" id="pvLater">Not yet</button>
+      </div>
+    </div>
+    <canvas id="pvWalker" class="pv-walker hidden" width="960" height="84"></canvas>
+    <div class="st-skip"><kbd>SPACE</kbd> next &nbsp; <kbd>ESC</kbd> skip</div>
+  </div>
+
   <div id="levelup-overlay" class="overlay hidden">
-    <h2 class="title small">CURSED TECHNIQUE <span class="accent">AWAKENING</span></h2>
+    <div class="ov-kanji">覚醒</div>
+    <h2 class="title small"><span class="t-white">CURSED TECHNIQUE</span> <span class="t-red">AWAKENING</span></h2>
+    <p class="subtitle"><span class="jp">術式覚醒</span>choose one</p>
     <div class="card-grid" id="upgradeCards"></div>
   </div>
 
   <div id="pause-overlay" class="overlay hidden">
-    <h2 class="title small">PAUSED</h2>
-    <p class="hint">Press ESC to resume</p>
+    <div class="ov-kanji">縛</div>
+    <h2 class="title small"><span class="t-white">BINDING</span> <span class="t-red">VOW</span></h2>
+    <p class="subtitle"><span class="jp">一時停止</span>the fight is paused</p>
+    <p class="hint">Press <kbd>ESC</kbd> to resume</p>
   </div>
 
   <div id="gameover-overlay" class="overlay hidden">
-    <h2 class="title small">CONSUMED <span class="accent">BY CURSE</span></h2>
+    <div class="ov-kanji red" id="goKanji">死</div>
+    <h2 class="title small" id="goTitle"><span class="t-white">CONSUMED</span> <span class="t-red">BY CURSE</span></h2>
+    <p class="subtitle"><span class="jp">呪いに呑まれた</span>your exorcism record</p>
+    <div id="goPanel" class="hidden">
+      <img id="goPanelImg" alt="">
+      <div class="panel-cap" id="goPanelCap"></div>
+    </div>
     <div class="stats-final" id="finalStats"></div>
     <div class="go-buttons">
-      <button class="btn primary" id="retryBtn">Retry</button>
+      <button class="btn primary" id="retryBtn"><span class="btn-kanji">再</span>Retry</button>
       <button class="btn" id="menuBtn">Main Menu</button>
     </div>
   </div>
+
+  <div id="panel" class="hidden">
+    <img id="panelImg" alt="">
+    <div class="panel-cap" id="panelCap"></div>
+  </div>
+
+  <div id="bark" class="hidden">
+    <div class="bark-face"><canvas id="barkFace" width="96" height="96"></canvas></div>
+    <div class="bark-body">
+      <div class="bark-name" id="barkName"></div>
+      <div class="bark-text" id="barkText"></div>
+    </div>
+  </div>
+
+  <div id="companion" class="hidden">
+    <div class="bark-face"><canvas id="compFace" width="96" height="96"></canvas></div>
+    <div class="bark-body">
+      <div class="bark-name" id="compName"></div>
+      <div class="bark-text" id="compText"></div>
+    </div>
+  </div>
+
+  <div id="dialogue-overlay" class="hidden">
+    <div class="dlg-dim"></div>
+    <div class="dlg-slash"></div>
+    <div class="dlg-portrait left" id="dlgLeft"><div class="dlg-frame"></div><canvas id="dlgPlayer" width="260" height="400"></canvas></div>
+    <div class="dlg-portrait right" id="dlgRight"><div class="dlg-frame"></div><canvas id="dlgBoss" width="420" height="420"></canvas></div>
+    <div class="dlg-wrap" id="dlgBox">
+      <div class="dlg-box">
+        <p class="dlg-text" id="dlgText"></p>
+        <span class="dlg-next">&#9660;</span>
+      </div>
+      <div class="dlg-name" id="dlgName"></div>
+    </div>
+    <div class="dlg-skip"><kbd>SPACE</kbd> next &nbsp; <kbd>ESC</kbd> skip</div>
+  </div>
+
+  <div id="story-overlay" class="hidden">
+    <div class="st-bg" id="stBg"></div>
+    <div class="st-head"><span id="stEyebrow"></span><h2 id="stTitle"></h2></div>
+    <div class="st-stage"><div class="st-frame" id="stFrame"><img id="stImg" alt="" /></div></div>
+    <div class="st-caption" id="stCaption">
+      <div class="st-name" id="stName"></div>
+      <p class="st-text" id="stText"></p>
+      <span class="st-next">&#9660;</span>
+    </div>
+    <div class="st-choice hidden" id="stChoice">
+      <p class="st-prompt" id="stPrompt"></p>
+      <div class="card-grid" id="stOptions"></div>
+    </div>
+    <div class="st-skip"><kbd>SPACE</kbd> next &nbsp; <kbd>ESC</kbd> skip to choice</div>
+  </div>
+
+  <div id="objective" class="hidden"><span class="ob-lv"></span><span class="ob-text"></span></div>
 
   <div id="banner" class="hidden"></div>
 </div>
@@ -62,6 +185,16 @@
 <script src="characters/itadori.js"></script>
 <script src="characters/megumi.js"></script>
 <script src="characters/gojo.js"></script>
-<script src="game.js"></script>
+<script src="characters/sukuna_heian_atlas.js"></script>
+<script src="characters/sukuna_heian.js"></script>
+<script src="js/meta.js"></script>
+<script src="js/story.js"></script>
+<script src="js/shibuya.js"></script>
+<script src="js/companion.js"></script>
+<script src="js/heian.js"></script>
+<script src="js/prestige.js"></script>
+<script src="js/enemies.js"></script>
+<script src="js/dialogue.js"></script>
+<script src="js/game.js"></script>
 </body>
 </html>

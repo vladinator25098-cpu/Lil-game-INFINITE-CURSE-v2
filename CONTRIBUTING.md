@@ -26,7 +26,7 @@ Full details are in [characters/README.md](characters/README.md). A few tips:
 
 - Only submit art you made or have permission to use.
 - **Credit the artist** in the "Credits" section of `README.md` with a link to their page.
-- Put sheets in `Icons/` and keep files reasonably small.
+- Put sprite sheets in `assets/sprites/characters/` (curses in `assets/sprites/curses/`) and manga panels in `assets/panels/yourname/`. Keep files reasonably small.
 
 ## Other contributions
 

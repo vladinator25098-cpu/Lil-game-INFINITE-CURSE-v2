@@ -6,6 +6,9 @@ registerCharacter({
   name: 'Your Character',         // shown on the menu card
   sub: '(Inspired-by)',
   color: '#f59e0b',               // card / fallback circle colour
+  kanji: '呪',                    // optional: big kanji watermark on the menu card
+  grade: 'Grade 1',               // optional: sorcerer grade shown on the card
+  speaker: 'YOU',                 // optional: name shown in boss conversations (see dialogue.js)
   desc: 'One or two sentences about how this character plays.',
 
   // Optional stats (defaults: 0 / 1 / 1 / 5)
@@ -27,8 +30,10 @@ registerCharacter({
 
   // Optional sprite. Without it the character is drawn as a coloured circle.
   // sprite: {
-  //   src: 'Icons/your_sheet.png', bg: [r, g, b],   // bg = flat background colour to remove
+  //   src: 'assets/sprites/characters/your_sheet.png', bg: [r, g, b],   // bg = flat background colour to remove
   //   idle: { y0: 0, y1: 64, count: 4, fps: 4 },    // pixel rows of the idle strip + frame count
   //   walk: { y0: 80, y1: 144, count: 6, fps: 10 },
+  //   portrait: { x0: 400, x1: 700, y0: 40, y1: 340 }, // optional big art for boss conversations (a region of the sheet)
+  //   portrait: { src: 'assets/sprites/characters/your_art.png', x0: 0, x1: 300, y0: 0, y1: 300 }, // ...or a crop of a separate transparent image
   // },
 });
